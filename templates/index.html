@@ -1,31 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head xmlns="http://www.w3.org/1999/xhtml">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="../style.css">
+    
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
+
+    <!-- JQuery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <title>Old Cars' Price Predictor</title>
 </head>
 <body class="bg-dark">
     <div class="container">
         <div class="row">
-            <div class="card mt-50">
-                <div class="card-header">
+            <div class="card">
+                <div class="card-header" style="text-align: center">
                     <h1>Old Cars' Price Predictor</h1>
                 </div>
-                <div class="card-body">
-
+                <div class="card-body" style="text-align: center">
+                    <h5>Fill the details below to predict the price of a car you want to sell:</h5>
+                    <br>
+                    <form method="POST" action="#" accept-charset="utf-8">
+                        <div class="col-md-12 form-group">
+                            <label><b>Select the company:</b></label><br>
+                            <select class="selectpicker form-control" id="company" name="company" required="1" onchange="show_car_models(this.id, 'car_model')" style="cursor: pointer;">
+                                {% for each_company in companies %}
+                                    <option value="{{ each_company }}">{{ each_company }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-12 form-group my-3">
+                            <label><b>Select the model:</b></label><br>
+                            <select class="selectpicker form-control" id="car_model" name="car_model" required="1" style="cursor: pointer;">
+                            </select>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label><b>Select Year of Purchase:</b></label><br>
+                            <select class="selectpicker form-control" id="purchase_year" name="purchase_year" required="1" style="cursor: pointer;">
+                                {% for each_year in purchase_year %}
+                                    <option value="{{ each_year }}">{{ each_year }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-12 form-group my-3">
+                            <label><b>Select the Fuel Type:</b> </label><br>
+                            <select class="selectpicker form-control" id="fuel_type" name="fuel_type" required="1" style="cursor: pointer;">
+                                {% for fuel in fuel_types %}
+                                    <option value="{{ fuel }}">{{ fuel }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label><b>Enter the Number of Kilometres that the car has travelled:</b></label><br>
+                            <input type="text" class="form-control" id="kms_driven" name="kms_driven"
+                                   placeholder="Enter the kilometres driven ">
+                        </div>
+                        <button class="btn-success form-control mt-4" id="send" onclick="submit_data()">Predict Price</button>
+                        <button class="btn-primary form-control" onclick="reset_form()">Reset Form</button>
+                    </form>
+                    <br>
+                    <div class="row">
+                        <div class="col-12" style="text-align: center">
+                            <h4 id="prediction"></h4>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <footer class="mt-3" style="color: rgba(255, 255, 255, 0.75); text-align: center;">
+        <span>&copy; Samarjeet Banik | 2021</span>
+    </footer>
 
-    <!-- Bootstrap JS and Popper -->
+    <script>
+        function show_car_models(company_id, car_model_id)
+        {
+            var company = document.getElementById(company_id)
+            var car_model = document.getElementById(car_model_id)
+            
+            console.log(company.value)
+            
+            car_model.value = ""
+            car_model.innerHTML = ""
+            
+            {% for company in companies %}
+                if( company.value == "{{ company }}")
+                {
+                    {% for model in car_models %}
+                        {% if company in model %}
+                            var newOption = document.createElement("option")
+                            newOption.value = "{{ model }}"
+                            newOption.innerHTML = "{{ model }}"
+                            car_model.options.add(newOption)
+                        {% endif %}
+                    {% endfor %}
+                }
+            {% endfor %}
+        }
+    
+        function form_handler(event) {
+            event.preventDefault()
+        }
+
+        function submit_data()
+        {
+            document.querySelector("form").addEventListener("submit", form_handler)
+    
+            var fd = new FormData(document.querySelector("form"))
+    
+            var xhr = new XMLHttpRequest({mozSystem: true})
+    
+            xhr.open("POST", "/predict", true)
+            document.getElementById("prediction").innerHTML = "Wait! Predicting Price..."
+            
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState == XMLHttpRequest.DONE) {
+                    document.getElementById("prediction").innerHTML="Predicted Price: ₹"+xhr.responseText
+                }
+            };
+    
+            xhr.onload = function(){ }
+    
+            xhr.send(fd)
+        }
+
+        function reset_form()
+        {
+            document.querySelector("form").reset()
+            document.getElementById("prediction").innerHTML = ""
+        }
+    </script>    
+
+    <!-- JQuery, Bootstrap JS and Popper -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 </body>
