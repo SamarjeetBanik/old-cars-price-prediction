@@ -25,11 +25,11 @@
                     <h1>Old Cars' Price Predictor</h1>
                 </div>
                 <div class="card-body" style="text-align: center">
-                    <h5>Fill the details below to predict the price of a car you want to sell:</h5>
+                    <h5>Fill the details below to predict the price of a car you want to sell.</h5>
                     <br>
                     <form method="POST" action="#" accept-charset="utf-8">
                         <div class="col-md-12 form-group">
-                            <label><b>Select the company:</b></label><br>
+                            <label><b>Select the company <span class="text-danger">*</span></b></label><br>
                             <select class="selectpicker form-control" id="company" name="company" required="1" onchange="show_car_models(this.id, 'car_model')" style="cursor: pointer;" onclick="validateBtn()">
                                 {% for each_company in companies %}
                                     <option value="{{ each_company }}">{{ each_company }}</option>
@@ -37,13 +37,13 @@
                             </select>
                         </div>
                         <div class="col-md-12 form-group my-3">
-                            <label><b>Select the model:</b></label><br>
+                            <label><b>Select the model <span class="text-danger">*</span></b></label><br>
                             <select class="selectpicker form-control" id="car_model" name="car_model" required="1" style="cursor: pointer;" onclick="validateBtn()">
                                 <option>Select Car Model As Per Company</option>
                             </select>
                         </div>
                         <div class="col-md-12 form-group">
-                            <label><b>Select Year of Purchase:</b></label><br>
+                            <label><b>Select Year of Purchase <span class="text-danger">*</span></b></label><br>
                             <select class="selectpicker form-control" id="purchase_year" name="purchase_year" required="1" style="cursor: pointer;" onclick="validateBtn()">
                                 {% for each_year in purchase_year %}
                                     <option value="{{ each_year }}">{{ each_year }}</option>
@@ -51,7 +51,7 @@
                             </select>
                         </div>
                         <div class="col-md-12 form-group my-3">
-                            <label><b>Select the Fuel Type:</b> </label><br>
+                            <label><b>Select the Fuel Type <span class="text-danger">*</span></b> </label><br>
                             <select class="selectpicker form-control" id="fuel_type" name="fuel_type" required="1" style="cursor: pointer;" onclick="validateBtn()">
                                 {% for fuel in fuel_types %}
                                     <option value="{{ fuel }}">{{ fuel }}</option>
@@ -59,7 +59,7 @@
                             </select>
                         </div>
                         <div class="col-md-12 form-group">
-                            <label><b>Enter the Number of Kilometres that the car has travelled:</b></label><br>
+                            <label><b>Enter the Number of Kilometres that the car has travelled <span class="text-danger">*</span></b></label><br>
                             <input type="text" class="form-control" id="kms_driven" name="kms_driven" placeholder="Enter the kilometres driven" onkeyup="validateBtn()">
                         </div>
                         <div class="mt-3">
