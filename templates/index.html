@@ -63,9 +63,9 @@
                             <input type="text" class="form-control" id="kms_driven" name="kms_driven" placeholder="Enter the kilometres driven" onkeyup="validateBtn()">
                         </div>
                         <div class="mt-3">
-                            <small id="must" class="text-danger">asterick (*) marked fields are required!</small><br>
+                            <small id="must" class="text-danger">Asterick (*) marked fields are required!</small><br>
                             <button class="btn btn-success" id="send" onclick="submit_data()" disabled>Predict Price</button>
-                            <button class="btn btn-primary" onclick="reset_form()">Reset Form</button>
+                            <button class="btn btn-primary" id="blank" onclick="reset_form()" disabled>Reset Form</button>
                         </div>
                     </form>
                     <br>
@@ -90,8 +90,8 @@
             
             console.log(company.value)
             
-            car_model.value = ""
-            car_model.innerHTML = ""
+            // car_model.value = ""
+            // car_model.innerHTML = ""
             
             {% for company in companies %}
                 if( company.value == "{{ company }}")
@@ -144,14 +144,26 @@
         var kms_driven = document.getElementById("kms_driven").value
 
         var predictBtn = document.getElementById("send")
+        var resetBtn = document.getElementById("blank")
         var mustMessage = document.getElementById("must")
 
         if(company != "Select Company" && car_model != "Select Car Model As Per Company" && purchase_year != "Select Year" && fuel_type != "Select Fuel Type" && kms_driven != "") {
-            predictBtn.disabled = false
-            mustMessage.innerHTML = ""
+            if(!isNaN(kms_driven)) {
+                predictBtn.disabled = false
+                mustMessage.innerHTML = ""
+            } else {
+                predictBtn.disabled = true
+                mustMessage.innerHTML = '"<i>Kms Driven</i>" field should have a numeric value!'
+            }
         } else {
             predictBtn.disabled = true
-            mustMessage.innerHTML = "asterick (*) marked fields are required!"
+            mustMessage.innerHTML = "Asterick (*) marked fields are required!"
+        }
+
+        if(company != "Select Company" || car_model != "Select Car Model As Per Company" || purchase_year != "Select Year" || fuel_type != "Select Fuel Type" || kms_driven != "") {
+            resetBtn.disabled = false
+        } else {
+            resetBtn.disabled = true
         }
     }
 
