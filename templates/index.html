@@ -135,43 +135,43 @@
             xhr.send(fd)
         }
 
-    function validateBtn()  
-    {
-        var company = document.getElementById("company").value
-        var car_model = document.getElementById("car_model").value
-        var purchase_year = document.getElementById("purchase_year").value
-        var fuel_type = document.getElementById("fuel_type").value
-        var kms_driven = document.getElementById("kms_driven").value
+        function validateBtn()  
+        {
+            var company = document.getElementById("company").value
+            var car_model = document.getElementById("car_model").value
+            var purchase_year = document.getElementById("purchase_year").value
+            var fuel_type = document.getElementById("fuel_type").value
+            var kms_driven = document.getElementById("kms_driven").value
 
-        var predictBtn = document.getElementById("send")
-        var resetBtn = document.getElementById("blank")
-        var mustMessage = document.getElementById("must")
+            var predictBtn = document.getElementById("send")
+            var resetBtn = document.getElementById("blank")
+            var mustMessage = document.getElementById("must")
 
-        if(company != "Select Company" && car_model != "Select Car Model As Per Company" && purchase_year != "Select Year" && fuel_type != "Select Fuel Type" && kms_driven != "") {
-            if(!isNaN(kms_driven)) {
-                predictBtn.disabled = false
-                mustMessage.innerHTML = ""
+            if(company != "Select Company" && car_model != "Select Car Model As Per Company" && purchase_year != "Select Year" && fuel_type != "Select Fuel Type" && kms_driven != "") {
+                if(!isNaN(kms_driven)) {
+                    predictBtn.disabled = false
+                    mustMessage.innerHTML = ""
+                } else {
+                    predictBtn.disabled = true
+                    mustMessage.innerHTML = '"<i>Kms Driven</i>" field should have a numeric value!'
+                }
             } else {
                 predictBtn.disabled = true
-                mustMessage.innerHTML = '"<i>Kms Driven</i>" field should have a numeric value!'
+                mustMessage.innerHTML = "Asterick (*) marked fields are required!"
             }
-        } else {
-            predictBtn.disabled = true
-            mustMessage.innerHTML = "Asterick (*) marked fields are required!"
-        }
 
-        if(company != "Select Company" || car_model != "Select Car Model As Per Company" || purchase_year != "Select Year" || fuel_type != "Select Fuel Type" || kms_driven != "") {
-            resetBtn.disabled = false
-        } else {
-            resetBtn.disabled = true
+            if(company != "Select Company" || car_model != "Select Car Model As Per Company" || purchase_year != "Select Year" || fuel_type != "Select Fuel Type" || kms_driven != "") {
+                resetBtn.disabled = false
+            } else {
+                resetBtn.disabled = true
+            }
         }
-    }
 
         function reset_form()
         {
-            document.querySelector("form").reset()
-            
-            document.getElementById("prediction").innerHTML = ""
+            // document.querySelector("form").reset()
+            window.location.reload();
+            // document.getElementById("prediction").innerHTML = ""
         }
     </script>    
 
